@@ -16,7 +16,7 @@ function App() {
     <Route
       {...rest}
       render={(props) => (
-        <div className="container-fluid">
+        <div className="container-fluid" style={{ minWidth: 320 }}>
           <Component {...props} />
         </div>
       )}
