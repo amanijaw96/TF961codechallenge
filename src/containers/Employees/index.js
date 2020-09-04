@@ -1,6 +1,7 @@
 import React from "react";
 import EmployeesAPI from "./api";
-
+import { FiltersWrapper } from "./Employees_styled";
+import CustomSelect from "../../components/CustomSelect/CustomSelect";
 const page_size = 15;
 
 const Value = (name, value) => {
@@ -14,21 +15,46 @@ const Value = (name, value) => {
 
 export default function Employees({ ...props }) {
   const [employees, setEpmloyees] = React.useState([]);
+  const [gender, setGender] = React.useState();
 
-  // on Component Mount
-  React.useEffect(() => {
-    EmployeesAPI.GetEmployees({ results: page_size, seed: "abc" })
+  const GetEmployees = (query) => {
+    EmployeesAPI.GetEmployees(query)
       .then((res) => {
         setEpmloyees(res.data.results);
         console.log(res);
       })
       .catch((err) => console.log(err));
+  };
+
+  // on Component Mount
+  React.useEffect(() => {
+    GetEmployees({ results: page_size, seed: "abc" });
   }, []);
 
-  console.log(employees);
+  React.useEffect(() => {
+    if (gender !== "gender") {
+      GetEmployees({ results: page_size, gender: gender });
+    }
+  }, [gender]);
 
   return (
     <div className="container">
+      <FiltersWrapper className="p-2">
+        <h1>Employees</h1>
+        <CustomSelect
+          value={gender}
+          onChange={(e) => {
+            setGender(e.target.value);
+          }}
+          style={{ width: 200 }}
+          options={[
+            { value: "Select gender", label: "Select gender" },
+            { value: "female", label: "Female" },
+            { value: "male", label: "Male" },
+          ]}
+        ></CustomSelect>
+      </FiltersWrapper>
+
       <div className="row">
         {employees.map((employee) => {
           return (
