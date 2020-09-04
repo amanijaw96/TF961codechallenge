@@ -2,7 +2,7 @@ import React from "react";
 
 export default function CustomInput(props) {
   return props.edit === false || props.edit === undefined ? (
-    props.value
+    <div>{props.value}</div>
   ) : (
     <input
       className="form-control"

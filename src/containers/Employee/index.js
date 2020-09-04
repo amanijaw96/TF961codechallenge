@@ -7,7 +7,9 @@ const Value = (name, value, edit) => {
     <div className="d-flex pl-3 pr-3 pt-2 ">
       <div
         className={
-          edit ? "mt-3 d-flex flex-column text-left" : "mt-3 d-flex flex-row"
+          edit
+            ? "mt-3 d-flex flex-column text-left"
+            : "mt-3 d-flex flex-md-row flex-column align-items-start"
         }
         style={{ width: "100%" }}
       >
