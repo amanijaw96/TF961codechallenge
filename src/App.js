@@ -7,6 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import Loading from "./components/Loading/Loading";
+import "font-awesome/css/font-awesome.min.css";
 
 const Employees = React.lazy(() => import("./containers/Employees/index"));
 const Employee = React.lazy(() => import("./containers/Employee/index"));

@@ -127,6 +127,7 @@ export default function Employees({ ...props }) {
                   <img
                     style={{ objectFit: "contain" }}
                     src={employee.picture.large}
+                    alt="profile"
                   ></img>
                   <div className="mt-2">
                     {Value("Name:", employee.name.first + employee.name.last)}
