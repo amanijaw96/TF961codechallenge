@@ -62,6 +62,11 @@ export default function Employees({ ...props }) {
     props.history.push("/employee/?" + searchParams.toString());
   };
 
+  const handleEmployeeDelete = (e, index) => {
+    e.stopPropagation();
+    setEpmloyees((curr) => [...curr.slice(0, index), ...curr.slice(index + 1)]);
+  };
+
   return (
     <div className="container">
       <FiltersWrapper className="p-2">
@@ -117,13 +122,20 @@ export default function Employees({ ...props }) {
         </div>
       ) : (
         <div className="row">
-          {employees.map((employee) => {
+          {employees.map((employee, index) => {
             return (
               <div className="col-lg-4 col-md-6">
                 <div
                   className="card p-3 mt-3"
                   onClick={() => handleEmployeeClick(employee)}
                 >
+                  <div className="d-flex justify-content-end">
+                    <i
+                      onClick={(e) => handleEmployeeDelete(e, index)}
+                      className="fa fa-trash"
+                      style={{ cursor: "pointer" }}
+                    ></i>
+                  </div>
                   <img
                     style={{ objectFit: "contain" }}
                     src={employee.picture.large}
