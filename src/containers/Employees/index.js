@@ -17,8 +17,9 @@ const Value = (name, value) => {
 
 export default function Employees({ ...props }) {
   const [employees, setEpmloyees] = React.useState([]);
-  const [gender, setGender] = React.useState();
+  const [gender, setGender] = React.useState("gender");
   const [Loading, setLoading] = React.useState(false);
+  const [Page, setPage] = React.useState(0);
 
   const GetEmployees = (query) => {
     setLoading(true);
@@ -38,26 +39,57 @@ export default function Employees({ ...props }) {
 
   React.useEffect(() => {
     if (gender !== "gender") {
+      setPage(0);
       GetEmployees({ results: page_size, gender: gender });
     }
   }, [gender]);
+
+  React.useEffect(() => {
+    if (Page !== 0) {
+      setGender("gender");
+      GetEmployees({ results: page_size, page: Page, seed: "abc" });
+    }
+  }, [Page]);
 
   return (
     <div className="container">
       <FiltersWrapper className="p-2">
         <h1>Employees</h1>
-        <CustomSelect
-          value={gender}
-          onChange={(e) => {
-            setGender(e.target.value);
-          }}
-          style={{ width: 200 }}
-          options={[
-            { value: "Select gender", label: "Select gender" },
-            { value: "female", label: "Female" },
-            { value: "male", label: "Male" },
-          ]}
-        ></CustomSelect>
+        <div className="d-flex">
+          <CustomSelect
+            value={gender}
+            onChange={(e) => {
+              setGender(e.target.value);
+            }}
+            style={{ width: 200, marginRight: 10 }}
+            options={[
+              { value: "Select gender", label: "Select gender" },
+              { value: "female", label: "Female" },
+              { value: "male", label: "Male" },
+            ]}
+          ></CustomSelect>
+          <CustomSelect
+            value={Page}
+            onChange={(e) => {
+              setPage(e.target.value);
+            }}
+            options={[
+              {
+                value: 1,
+                label: "page 1",
+              },
+              {
+                value: 2,
+                label: "page 2",
+              },
+              {
+                value: 3,
+                label: "page 3",
+              },
+            ]}
+            style={{ width: 200 }}
+          ></CustomSelect>
+        </div>
       </FiltersWrapper>
 
       {Loading ? (
