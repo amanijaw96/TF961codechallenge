@@ -2,6 +2,7 @@ import React from "react";
 import EmployeesAPI from "../Employees/api";
 import CustomInput from "../../components/CustomInput";
 import * as immutable from "object-path-immutable";
+import CustomButton from "../../components/CustomButton";
 
 export default function Employee({ ...props }) {
   const [employees, setEmployees] = React.useState([]);
@@ -41,6 +42,14 @@ export default function Employee({ ...props }) {
     setEmployee((curr) => immutable.set(curr, path, value));
   };
 
+  const handleSubmit = () => {
+    var isvalidate = document.getElementById("employeeForm").checkValidity();
+    if (isvalidate) {
+      setEdit(false);
+    }
+    document.getElementById("employeeForm").classList.add("was-validated");
+  };
+
   const Value = (name, value, edit, type, path) => {
     return (
       <div className="d-flex pl-3 pr-3 pt-2 ">
@@ -73,10 +82,12 @@ export default function Employee({ ...props }) {
       >
         <div className="row">
           <div className="col-12 text-right">
-            <i
-              onClick={() => setEdit((curr) => !curr)}
-              className={!edit ? "fa fa-edit pr-3" : "fa fa-close pr-3"}
-            />
+            {!edit ? (
+              <i
+                onClick={() => setEdit((curr) => !curr)}
+                className={"fa fa-edit pr-3"}
+              />
+            ) : null}
           </div>
         </div>
 
@@ -105,6 +116,13 @@ export default function Employee({ ...props }) {
             {Value("Age:", employee.dob.age, edit, "number", "dob.age")}
             {Value("Email:", employee.email, edit, "email", "email")}
             {Value("Nationality", employee.nat, edit, "string", "nat")}
+            {edit ? (
+              <div className="mt-3 pl-3 pr-3 mb-2">
+                <CustomButton onClick={() => handleSubmit()}>
+                  Submit
+                </CustomButton>
+              </div>
+            ) : null}
           </form>
         </div>
       </div>

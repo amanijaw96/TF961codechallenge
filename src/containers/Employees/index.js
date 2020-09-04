@@ -68,7 +68,7 @@ export default function Employees({ ...props }) {
   };
 
   return (
-    <div className="container">
+    <div className="container mb-5">
       <FiltersWrapper className="p-2">
         <h1>Employees</h1>
         <div className="d-flex flex-md-row flex-column">
