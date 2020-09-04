@@ -1,24 +1,7 @@
 import React from "react";
 import EmployeesAPI from "../Employees/api";
 import CustomInput from "../../components/CustomInput";
-
-const Value = (name, value, edit) => {
-  return (
-    <div className="d-flex pl-3 pr-3 pt-2 ">
-      <div
-        className={
-          edit
-            ? "mt-3 d-flex flex-column text-left"
-            : "mt-3 d-flex flex-md-row flex-column align-items-start"
-        }
-        style={{ width: "100%" }}
-      >
-        <span className="font-weight-bold mr-2">{name}</span>
-        <CustomInput edit={edit} value={value}></CustomInput>
-      </div>
-    </div>
-  );
-};
+import * as immutable from "object-path-immutable";
 
 export default function Employee({ ...props }) {
   const [employees, setEmployees] = React.useState([]);
@@ -52,6 +35,36 @@ export default function Employee({ ...props }) {
       .catch((err) => console.log(err));
   }, [props.location.search]);
 
+  const handleValueChange = (e, path) => {
+    let value = e.target.value;
+    document.getElementById("employeeForm").classList.add("was-validated");
+    setEmployee((curr) => immutable.set(curr, path, value));
+  };
+
+  const Value = (name, value, edit, type, path) => {
+    return (
+      <div className="d-flex pl-3 pr-3 pt-2 ">
+        <div
+          className={
+            edit
+              ? "mt-3 d-flex flex-column text-left"
+              : "mt-3 d-flex flex-md-row flex-column align-items-start"
+          }
+          style={{ width: "100%" }}
+        >
+          <span className="font-weight-bold mr-2">{name}</span>
+          <CustomInput
+            onChange={(e) => handleValueChange(e, path)}
+            type={type}
+            edit={edit}
+            value={value}
+            required
+          ></CustomInput>
+        </div>
+      </div>
+    );
+  };
+
   return employee ? (
     <div className="container">
       <div
@@ -73,11 +86,26 @@ export default function Employee({ ...props }) {
           alt="profile"
         ></img>
         <div className="mt-4">
-          {Value("Name:", employee.name.first + employee.name.last, edit)}
-          {Value("Phone:", employee.phone, edit)}
-          {Value("Age:", employee.dob.age, edit)}
-          {Value("Email:", employee.email, edit)}
-          {Value("Nationality", employee.nat, edit)}
+          <form id="employeeForm">
+            {Value(
+              "First Name:",
+              employee.name.first,
+              edit,
+              "string",
+              "name.first"
+            )}
+            {Value(
+              "Last Name:",
+              employee.name.last,
+              edit,
+              "string",
+              "name.last"
+            )}
+            {Value("Phone:", employee.phone, edit, "string", "phone")}
+            {Value("Age:", employee.dob.age, edit, "number", "dob.age")}
+            {Value("Email:", employee.email, edit, "email", "email")}
+            {Value("Nationality", employee.nat, edit, "string", "nat")}
+          </form>
         </div>
       </div>
     </div>
