@@ -66,7 +66,7 @@ export default function Employees({ ...props }) {
     <div className="container">
       <FiltersWrapper className="p-2">
         <h1>Employees</h1>
-        <div className="d-flex">
+        <div className="d-flex flex-md-row flex-column">
           <CustomSelect
             value={gender}
             onChange={(e) => {
