@@ -9,7 +9,7 @@ import {
 import Loading from "./components/Loading/Loading";
 
 const Employees = React.lazy(() => import("./containers/Employees/index"));
-// const Article = React.lazy(() => import("./containers/Article/index"));
+const Employee = React.lazy(() => import("./containers/Employee/index"));
 
 function App() {
   const RestrictedRoute = ({ component: Component, isLoggedIn, ...rest }) => (
@@ -29,6 +29,11 @@ function App() {
         <Switch>
           <React.Suspense fallback={<Loading />}>
             <RestrictedRoute path="/" exact={true} component={Employees} />
+            <RestrictedRoute
+              path="/employee"
+              exact={true}
+              component={Employee}
+            />
           </React.Suspense>
         </Switch>
       </Router>

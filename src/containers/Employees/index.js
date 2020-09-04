@@ -20,6 +20,7 @@ export default function Employees({ ...props }) {
   const [gender, setGender] = React.useState("gender");
   const [Loading, setLoading] = React.useState(false);
   const [Page, setPage] = React.useState(0);
+  const [query, setQuery] = React.useState({ results: page_size, seed: "abc" });
 
   const GetEmployees = (query) => {
     setLoading(true);
@@ -39,6 +40,7 @@ export default function Employees({ ...props }) {
 
   React.useEffect(() => {
     if (gender !== "gender") {
+      setQuery({ results: page_size, gender: gender });
       setPage(0);
       GetEmployees({ results: page_size, gender: gender });
     }
@@ -47,9 +49,18 @@ export default function Employees({ ...props }) {
   React.useEffect(() => {
     if (Page !== 0) {
       setGender("gender");
+      setQuery({ results: page_size, page: Page, seed: "abc" });
       GetEmployees({ results: page_size, page: Page, seed: "abc" });
     }
   }, [Page]);
+
+  const handleEmployeeClick = (employee) => {
+    var searchParams = new URLSearchParams({
+      ...query,
+      employee: employee.login.uuid,
+    });
+    props.history.push("/employee/?" + searchParams.toString());
+  };
 
   return (
     <div className="container">
@@ -109,7 +120,10 @@ export default function Employees({ ...props }) {
           {employees.map((employee) => {
             return (
               <div className="col-lg-4 col-md-6">
-                <div className="card p-3 mt-3">
+                <div
+                  className="card p-3 mt-3"
+                  onClick={() => handleEmployeeClick(employee)}
+                >
                   <img
                     style={{ objectFit: "contain" }}
                     src={employee.picture.large}
